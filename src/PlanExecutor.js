@@ -13,8 +13,8 @@ function PlanExecutor(actor) {
         plan.action()
             .then( plan.finalAction(actor) )
             .then( 
-                result => planNameInExecution = NO_PLAN,
-                error => planNameInExecution = NO_PLAN
+                result => { planNameInExecution = NO_PLAN, console.log("success, " +result) },
+                error => { planNameInExecution = NO_PLAN, console.log("error, " +error) }
             );        
     }
 }
