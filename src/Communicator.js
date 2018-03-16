@@ -8,40 +8,39 @@ function Communicator({ port, ip, actorId }) {
     
     function connectTo(port, ip) {
         const client = new net.Socket();
+        clientSocket = client;
 
-        client.connect({ port, ip }, () => console.log('Connecting...') );
+        client.connect({ port, ip }, () => console.log(`[${actorId}] Connecting...`) );
 
-        client.on('connect', function() {
-            console.log('connected');
-            clientSocket = client;
+        client.on('connect', () => {
+            console.log(`[${actorId}] Connected`);
 
             clientSocket.write( JSON.stringify({ actorId: actorId }) );
             flushOutQueue();
         });
 
         client.on('data', message => {
-            console.log('Message received: ' + message);
+            console.log(`[${actorId}] Message received: ${message}`);
         });
         
         client.on('close', () => {
-            console.log('Connection closed');
+            console.log(`[${actorId}] Connection closed`);
         });
+
+        client.on( 'error', () => console.log(`[${actorId}] Connection error`) );
+    }
+
+    this.send = function(message) {
+        if(!clientSocket.connecting)
+            clientSocket.write(message);
+        else {
+            console.log(`[${actorId}] Socket not created, message added to queue`);
+            outQueue.push(message);
+        }
     }
 
     this.destroy = function() {
-        if(clientSocket)
-            clientSocket.destroy();
-        else
-            console.error("Socket not created");
-    }
-
-    this.send = function(data) {
-        if(clientSocket)
-            clientSocket.write(data);
-        else {
-            console.log("Socket not created");
-            outQueue.push(data);
-        }
+        clientSocket.on('connect', clientSocket.end );
     }
 
     function flushOutQueue() {
