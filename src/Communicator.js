@@ -1,7 +1,11 @@
 const net = require('net');
 const eventBus = require('./EventBus');
 
+const SEPARATOR = "$$SEP$$";
+
 function Communicator({ port, ip, actorId }) {
+    const self = this;
+
     let clientSocket;
     const outQueue = [];
 
@@ -11,32 +15,33 @@ function Communicator({ port, ip, actorId }) {
         const client = new net.Socket();
         clientSocket = client;
 
-        client.connect({ port, ip }, () => console.log(`[${actorId}] Connecting...`) );
+        client.connect({ port, ip }, () => console.log(`\t[${actorId} IO] Connecting...`) );
 
         client.on('connect', () => {
-            console.log(`[${actorId}] Connected`);
+            console.log(`\t[${actorId} IO] Connected`);
 
-            clientSocket.write( JSON.stringify({ actorId: actorId }) );
+            self.send({ actorId: actorId });
             flushOutQueue();
         });
 
         client.on('data', message => {
-            console.log(`[${actorId}] Message received: ${message}`);
-
-            const parsedMsg = JSON.parse(message);
-            eventBus.post(parsedMsg.name, parsedMsg.content);
+            String(message).split(SEPARATOR)
+                .filter(string => string.trim().length !== 0)
+                .map(message => { console.log(`\t[${actorId} IO] Message received: ${message}`); return message })
+                .map(message => JSON.parse(message))
+                .forEach(message => eventBus.post(message.name, message.content) );                    
         });
         
-        client.on('close', () =>  console.log(`[${actorId}] Connection closed`) );
+        client.on('close', () =>  console.log(`\t[${actorId} IO] Connection closed`) );
 
-        client.on('error', () => console.log(`[${actorId}] Connection error`) );
+        client.on('error', () => console.log(`\t[${actorId} IO] Connection error`) );
     }
 
     this.send = function(message) {
         if(!clientSocket.connecting)
-            clientSocket.write(message);
+            clientSocket.write( JSON.stringify(message) +SEPARATOR);
         else {
-            console.log(`[${actorId}] Socket not created, message added to queue`);
+            console.log(`\t[${actorId} IO] Socket not created, message added to queue`);
             outQueue.push(message);
         }
     }
@@ -51,7 +56,7 @@ function Communicator({ port, ip, actorId }) {
     function flushOutQueue() {
         while(outQueue.length !== 0) {
             const data = outQueue.shift();
-            clientSocket.write(data);
+            self.send(data);
         }
     }
 }

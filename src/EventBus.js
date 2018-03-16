@@ -27,6 +27,10 @@ module.exports = {
         if(eventCallbacksPair)
             delete eventCallbacksPair.callbacks[key];
     },
+
+    unsubscribeAll: function( key ) {
+        eventCallbacksPairs.forEach( eventCallbacksPair => { delete eventCallbacksPair.callbacks[key] } );
+    },
     
     post: function( eventType, args ) {
         const eventCallbacksPair = findEventCallbacksPair(eventType);

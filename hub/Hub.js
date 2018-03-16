@@ -1,9 +1,11 @@
 const net = require('net');
 const Dispatcher = require('./Dispatcher');
 
+const SEPARATOR = "$$SEP$$";
+
 const connecetActors = {};
 
-const dispatcher = new Dispatcher(connecetActors);
+const dispatcher = new Dispatcher(connecetActors, SEPARATOR);
 
 startHub(8900);
 
@@ -13,18 +15,21 @@ function startHub(port) {
         console.log("\nactor connected, waiting for actorId...")
         let actorId;
 
-        //socket.write("Welcome " + socket.name + "\n");
-
         socket.on('data', message => {
-            const parsedMessage = JSON.parse(message);
             
-            if(!actorId) {
-                actorId = parsedMessage.actorId;
-                connecetActors[actorId] = socket;
-            } else
-                dispatcher.dispatch(parsedMessage)
+            String(message)
+                .split(SEPARATOR)
+                .filter(string => string.trim().length !== 0)
+                .map(message => { console.log(`\t[${actorId} IO] Message received: ${message}`); return message })
+                .map(message => JSON.parse(message))
+                .forEach(message => {  
 
-            console.log(`[${ actorId }] message received, data: ${message}`);
+                    if(!actorId) {
+                        actorId = message.actorId;
+                        connecetActors[actorId] = socket;
+                    } else
+                        dispatcher.dispatch(message)
+            });
         });
 
         socket.on('end', () => {

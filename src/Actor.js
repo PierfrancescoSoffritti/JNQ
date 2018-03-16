@@ -25,7 +25,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
     }
 
     this.send = function(message) {
-        communicator.send( JSON.stringify(message) );
+        communicator.send( message );
     }
 
     this.onReceive = function({ name, once, interval, action }) {
@@ -53,6 +53,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
     this.finish = function() {
         communicator.finish();
+        eventBus.unsubscribeAll(this);
     }
 
     this.switchToPlan("startPlan");
