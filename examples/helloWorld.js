@@ -1,7 +1,7 @@
 const Actor = require('../src/Actor');
 const Plan = require('../src/Plan');
 const {Message, Event} = require('../src/communicationUnits');
-const {sleep} = require('../src/Utils');
+const {wait} = require('../src/Utils');
 
 const context = { hubIp: "localhost", hubPort: 8900 };
 

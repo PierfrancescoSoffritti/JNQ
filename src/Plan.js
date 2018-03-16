@@ -1,22 +1,10 @@
-const detaultAction = (actor) => console.log("no action for this plan");
+const detaultAction = (actor, reps) => console.log("no action for this plan");
+const defaultFinalAction = (actor, reps) => {};
 
-function Plan( action = detaultAction ) {
-    //this.action = (actor) => { return buildPromiseFromAction(action, actor) }
-    this.action = action;
+function Plan( action = detaultAction, finalAction = defaultFinalAction ) {
+    this.action = action;    
+    this.finalAction = finalAction;
+    this.reps = 0;
 }
-
-// function buildPromiseFromAction(action, actor) {
-//     const promise = new Promise( (resolve, reject) => {              
-//         try {
-//             action(actor);
-//             resolve("Stuff worked!");
-//         } catch(error) {
-//             reject( Error("It broke") );
-//         }
-        
-//     });
-
-//     return promise;
-// }
 
 module.exports = Plan;

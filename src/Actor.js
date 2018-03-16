@@ -21,7 +21,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
         if(!plan)
             console.error(`[${actorId}] plan "${planName}" not defined.`);
         else
-            planExecutor.switchToPlan(plan);
+            planExecutor.executeToPlan(plan);
     }
 
     this.send = function(message) {
