@@ -23,11 +23,9 @@ function Communicator({ port, ip, actorId }) {
             console.log(`[${actorId}] Message received: ${message}`);
         });
         
-        client.on('close', () => {
-            console.log(`[${actorId}] Connection closed`);
-        });
+        client.on('close', () =>  console.log(`[${actorId}] Connection closed`) );
 
-        client.on( 'error', () => console.log(`[${actorId}] Connection error`) );
+        client.on('error', () => console.log(`[${actorId}] Connection error`) );
     }
 
     this.send = function(message) {
@@ -40,7 +38,10 @@ function Communicator({ port, ip, actorId }) {
     }
 
     this.destroy = function() {
-        clientSocket.on('connect', clientSocket.end );
+        if(clientSocket.connecting)
+            clientSocket.on('connect', clientSocket.end );
+        else
+            clientSocket.end();
     }
 
     function flushOutQueue() {

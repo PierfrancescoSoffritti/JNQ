@@ -1,6 +1,9 @@
 const net = require('net');
+const Dispatcher = require('./Dispatcher');
 
 const connecetActors = {};
+
+const dispatcher = new Dispatcher(connecetActors);
 
 startHub(8900);
 
@@ -18,7 +21,8 @@ function startHub(port) {
             if(!actorId) {
                 actorId = parsedMessage.actorId;
                 connecetActors[actorId] = socket;
-            }
+            } else
+                dispatcher.dispatch(parsedMessage)
 
             console.log(`[${ actorId }] message received, data: ${message}`);
         });
