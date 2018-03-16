@@ -1,8 +1,6 @@
 const Actor = require('./Actor');
 const Plan = require('./Plan');
-
-const Message = require('./Message');
-
+const {Message, Event} = require('./communicationUnits');
 const {sleep} = require('./Utils');
 
 const context = { hubIp: "localhost", hubPort: 8900 };
@@ -23,11 +21,11 @@ const plans = {
             //actor.onReceive( { name: "testName", interval: 2000, action: actor.destroy } );
             //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.destroy } );
 
-            actor.send( new Message( { recipient:'testActor1', message: { name: "testName", content: "test content" } } ) );
+            //actor.send( new Message( { recipient:'testActor1', message: { name: "testName", content: "test content" } } ) );
+            actor.send( new Event( { message: { name: "testName", content: "test content" } } ) );
         } ); 
     } ) 
 };
-
 
 const actor = new Actor( { actorId: "testActor1", context, plans } );
 //const actor2 = new Actor( { actorId: "dieImmediatlyActor", context } );
