@@ -41,7 +41,7 @@ function Communicator({ port, ip, actorId }) {
         }
     }
 
-    this.destroy = function() {
+    this.finish = function() {
         if(clientSocket.connecting)
             clientSocket.on('connect', clientSocket.end );
         else

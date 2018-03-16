@@ -6,7 +6,7 @@ const eventBus = require('./EventBus');
 
 const detaultContext = { host: "localhost", port: 8010 };
 const detaultState = {};
-const detaultPlan = { startPlan: new Plan( (actor) => { console.log("no plan defined"); actor.destroy() } ) };
+const detaultPlan = { startPlan: new Plan( (actor) => { console.log("no plan defined"); actor.finish() } ) };
 
 function Actor( { actorId, context = defaultContext, state = detaultState, plans = detaultPlan } ) {
 
@@ -51,8 +51,8 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
             console.log(`[${actorId}] not sure how to behave on receive of name '${name}'`);
     }
 
-    this.destroy = function() {
-        communicator.destroy();
+    this.finish = function() {
+        communicator.finish();
     }
 
     this.switchToPlan("startPlan");
