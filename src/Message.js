@@ -1,4 +1,4 @@
-function Message({ recipient = '*', message = { } }) {
+function Message({ recipient = '*', message = { type: "default", content: "" } }) {
 
     return { recipient, message };
 }

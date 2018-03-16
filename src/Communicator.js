@@ -1,4 +1,5 @@
 const net = require('net');
+const eventBus = require('./EventBus');
 
 function Communicator({ port, ip, actorId }) {
     let clientSocket;
@@ -21,6 +22,9 @@ function Communicator({ port, ip, actorId }) {
 
         client.on('data', message => {
             console.log(`[${actorId}] Message received: ${message}`);
+
+            const parsedMsg = JSON.parse(message);
+            eventBus.post(parsedMsg.type, parsedMsg.content);
         });
         
         client.on('close', () =>  console.log(`[${actorId}] Connection closed`) );
