@@ -7,22 +7,35 @@ startHub(8900);
 function startHub(port) {
     
     const server = net.createServer( socket => {
-        let actorName;
+        console.log("\nactor connected, waiting for actorId...")
+        let actorId;
 
         //socket.write("Welcome " + socket.name + "\n");
 
-        socket.on('data', data => {
-            actorName = data.actorName;
-            connecetActors[actorName] = socket;
+        socket.on('data', message => {
+            const parsedMessage = JSON.parse(message);
+            
+            if(!actorId) {
+                actorId = parsedMessage.actorId;
+                connecetActors[actorId] = socket;
+            }
+
+            console.log(`[${ actorId }] message received, data: ${message}`);
         });
 
         socket.on('end', () => {
-            delete connecetActors[actorName];
+            console.log(`[${ actorId }] connection terminated`);
+            delete connecetActors[actorId];
+        });
+
+        socket.on('error', () => {
+            console.log(`[${ actorId }] connection error`);
+            delete connecetActors[actorId];
         });
 
     })
 
-    server.listen(port, 'localhost');
+    server.listen(port);
     
     console.log(`server running at port ${port}`);
 }

@@ -3,11 +3,11 @@ const Plan = require('./Plan');
 
 const {sleep} = require('./Utils');
 
-const context = { host: "localhost", port: 8010 };
+const context = { hubIp: "localhost", hubPort: 8900 };
 
 const plans = {
     startPlan: new Plan( { 
-        action: () => { console.log("i have been created!!"); sleep(2000) },
+        action: () => console.log("i have been created!!"),
         finalAction: (actor) => actor.switchToPlan("otherPlan")
     } ),
 
@@ -16,6 +16,6 @@ const plans = {
     } ) 
 };
 
-new Promise(resolve => setTimeout(resolve, ms))
+const actorId = "testActor";
 
-const actor = new Actor( { context, plans } );
+const actor = new Actor( { actorId, context, plans } );
