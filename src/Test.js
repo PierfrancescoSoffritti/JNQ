@@ -17,7 +17,11 @@ const plans = {
         console.log("sendTestMessagePlan")
         sleep(2000).then( () => { 
             actor.send( new Message( { recipient:'testActor1', message: { test:"test" } } ) );
-            actor.destroy();
+            
+            //actor.onReceive( { type: "eventType", once, action: actor.destroy } );
+            actor.onReceive( { type: "eventType", action: () => console.log("received") } );
+            //actor.onReceive( { type: "eventType", interval: 2000, action: actor.destroy } );
+            //actor.onReceive( { type: "eventType", once, interval: 2000, action: actor.destroy } );
         } ); 
     } ) 
 };
