@@ -10,18 +10,20 @@ const context = { hubIp: "localhost", hubPort: 8900 };
 const plans = {
     startPlan: new Plan( actor => { 
         console.log("startPlan");
+
         actor.switchToPlan("sendTestMessagePlan");
      } ),
 
     sendTestMessagePlan: new Plan( actor => { 
         console.log("sendTestMessagePlan")
-        sleep(2000).then( () => {             
-            actor.onReceive( { type: "testType", once: true, action: actor.destroy } );
-            //actor.onReceive( { type: "testType", action: (msg) => console.log(msg) } );
-            //actor.onReceive( { type: "testType", interval: 2000, action: actor.destroy } );
-            //actor.onReceive( { type: "testType", once: true, interval: 2000, action: actor.destroy } );
 
-            actor.send( new Message( { recipient:'testActor1', message: { type:"testType", content: "test content" } } ) );
+        sleep(2000).then( () => {             
+            actor.onReceive( { name: "testName", once: true, action: actor.destroy } );
+            //actor.onReceive( { name: "testName", action: (msg) => console.log(msg) } );
+            //actor.onReceive( { name: "testName", interval: 2000, action: actor.destroy } );
+            //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.destroy } );
+
+            actor.send( new Message( { recipient:'testActor1', message: { name: "testName", content: "test content" } } ) );
         } ); 
     } ) 
 };

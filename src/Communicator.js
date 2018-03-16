@@ -24,7 +24,7 @@ function Communicator({ port, ip, actorId }) {
             console.log(`[${actorId}] Message received: ${message}`);
 
             const parsedMsg = JSON.parse(message);
-            eventBus.post(parsedMsg.type, parsedMsg.content);
+            eventBus.post(parsedMsg.name, parsedMsg.content);
         });
         
         client.on('close', () =>  console.log(`[${actorId}] Connection closed`) );

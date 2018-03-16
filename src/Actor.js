@@ -28,27 +28,27 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
         communicator.send( JSON.stringify(message) );
     }
 
-    this.onReceive = function({ type, once, interval, action }) {
+    this.onReceive = function({ name, once, interval, action }) {
         interval = (!interval || interval <= 0) ? false : interval;
 
         if(once && !interval)
-            eventBus.subscribe(type, this, () => { eventBus.unsubscribe(type, this); action(); });
+            eventBus.subscribe(name, this, () => { eventBus.unsubscribe(name, this); action(); });
 
         else if(!once && !interval)
-            eventBus.subscribe( type, this, action );
+            eventBus.subscribe( name, this, action );
 
         else if(!once && interval) {
-            eventBus.subscribe( type, this, action );
-            setTimeout( () =>  eventBus.unsubscribe(type, this), interval);
+            eventBus.subscribe( name, this, action );
+            setTimeout( () =>  eventBus.unsubscribe(name, this), interval);
         }
 
         else if(once && interval) {
-            const timeoutId = setTimeout( () =>  eventBus.unsubscribe(type, this), interval);
-            eventBus.subscribe(type, this, () => { eventBus.unsubscribe(type, this); clearTimeout(timeoutId); action(); });
+            const timeoutId = setTimeout( () =>  eventBus.unsubscribe(name, this), interval);
+            eventBus.subscribe(name, this, () => { eventBus.unsubscribe(name, this); clearTimeout(timeoutId); action(); });
         }
 
         else 
-            console.log(`[${actorId}] not sure how to behave on receive of ${type}`);
+            console.log(`[${actorId}] not sure how to behave on receive of name '${name}'`);
     }
 
     this.destroy = function() {
