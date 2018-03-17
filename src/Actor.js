@@ -2,7 +2,7 @@ const Plan = require('./Plan');
 const PlanExecutor = require('./PlanExecutor');
 const Communicator = require('./Communicator');
 
-const eventBus = require('./EventBus');
+const EventBus = require('./EventBus');
 
 const detaultContext = { host: "localhost", port: 8010 };
 const detaultState = {};
@@ -12,8 +12,9 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
     if(!actorId) console.error("actorId not defined")
 
+    const eventBus = new EventBus();
     const planExecutor = new PlanExecutor(this);
-    const communicator = new Communicator({ port: context.hubPort, ip: context.hubIp, actorId });
+    const communicator = new Communicator({ port: context.hubPort, ip: context.hubIp, actorId, eventBus });
     
     this.switchToPlan = function(planName) {
         const plan = plans[planName];

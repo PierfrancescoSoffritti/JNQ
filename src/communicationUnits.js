@@ -1,14 +1,14 @@
-const defaultMessage = { name: "defaultName", content: "" };
+const defaultPayload = { name: "defaultName", content: "" };
 
-function Message( { recipient, message = defaultMessage } ) {
+function Message( { recipient, payload = defaultPayload } ) {
     if(!recipient)
         console.error("This message has no recipient!");
 
-    return { recipient, message };
+    return { recipient, payload };
 }
 
-function Event( { message = defaultMessage } ) {
-    return new Message({ recipient: '*', message });
+function Event( { payload = defaultPayload } ) {
+    return new Message({ recipient: '*', payload });
 }
 
 module.exports.Message = Message;

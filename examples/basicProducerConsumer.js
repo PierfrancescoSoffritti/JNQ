@@ -11,13 +11,13 @@ const producer = new Actor( {
         startPlan: new Plan( actor => {
             console.log("producer, sends 1st message");
 
-            actor.send( new Message( { recipient: "consumer", message: { name: "testMessage", content: 1 } } ) );
+            actor.send( new Message( { recipient: "consumer", payload: { name: "testMessage", content: 1 } } ) );
 
             wait(2000).then( () => { 
                 console.log("producer, sends 2nd and 3rd messages");
 
-                actor.send( new Message( { recipient: "consumer", message: { name: "testMessage", content: 2 } } ) );
-                actor.send( new Message( { recipient: "consumer", message: { name: "testMessage", content: 3 } } ) );
+                actor.send( new Message( { recipient: "consumer", payload: { name: "testMessage", content: 2 } } ) );
+                actor.send( new Message( { recipient: "consumer", payload: { name: "testMessage", content: 3 } } ) );
                 actor.finish();
              } );
         } ) 

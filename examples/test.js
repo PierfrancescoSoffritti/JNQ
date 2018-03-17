@@ -21,8 +21,8 @@ const plans = {
             //actor.onReceive( { name: "testName", interval: 2000, action: actor.finish } );
             //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.finish } );
 
-            //actor.send( new Message( { recipient:'testActor1', message: { name: "testName", content: "test content" } } ) );
-            actor.send( new Event( { message: { name: "testName", content: "test content" } } ) );
+            //actor.send( new Message( { recipient:'testActor1', payload: { name: "testName", content: "test content" } } ) );
+            actor.send( new Event( { payload: { name: "testName", content: "test content" } } ) );
         } ); 
     } ) 
 };

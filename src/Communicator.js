@@ -1,9 +1,8 @@
 const net = require('net');
-const eventBus = require('./EventBus');
 
 const SEPARATOR = "$$SEP$$";
 
-function Communicator({ port, ip, actorId }) {
+function Communicator({ port, ip, actorId, eventBus }) {
     const self = this;
 
     let clientSocket;
