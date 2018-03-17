@@ -32,19 +32,19 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
         interval = (!interval || interval <= 0) ? false : interval;
 
         if(once && !interval)
-            eventBus.subscribe(name, this, () => { eventBus.unsubscribe(name, this); action(); });
+            eventBus.subscribe(name, actorId, () => { eventBus.unsubscribe(name, actorId); action(); });
 
         else if(!once && !interval)
-            eventBus.subscribe( name, this, action );
+            eventBus.subscribe( name, actorId, action );
 
         else if(!once && interval) {
-            eventBus.subscribe( name, this, action );
-            setTimeout( () =>  eventBus.unsubscribe(name, this), interval);
+            eventBus.subscribe( name, actorId, action );
+            setTimeout( () =>  eventBus.unsubscribe(name, actorId), interval);
         }
 
         else if(once && interval) {
-            const timeoutId = setTimeout( () =>  eventBus.unsubscribe(name, this), interval);
-            eventBus.subscribe(name, this, () => { eventBus.unsubscribe(name, this); clearTimeout(timeoutId); action(); });
+            const timeoutId = setTimeout( () =>  eventBus.unsubscribe(name, actorId), interval);
+            eventBus.subscribe(name, actorId, () => { eventBus.unsubscribe(name, actorId); clearTimeout(timeoutId); action(); });
         }
 
         else 
@@ -53,7 +53,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
     this.finish = function() {
         communicator.finish();
-        eventBus.unsubscribeAll(this);
+        eventBus.unsubscribeAll(actorId);
     }
 
     this.switchToPlan("startPlan");
