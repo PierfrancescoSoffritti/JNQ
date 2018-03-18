@@ -12,7 +12,10 @@ const webpage = new Actor( {
     plans: { 
         startPlan: new Plan( actor => {
             //wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
-            applicationSpecificLogic();
+
+            actor.onReceive( { name: "messageFromWebpage", action: msg => console.log(`\n actor, message received: ${msg}\n`) } );
+
+            applicationSpecificLogic(actor);
 
         } ),
         

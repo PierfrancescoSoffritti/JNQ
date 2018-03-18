@@ -15,6 +15,8 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
     const eventBus = new EventBus();
     const planExecutor = new PlanExecutor(this);
     const communicator = new Communicator({ port: context.hubPort, ip: context.hubIp, actorId, eventBus });
+
+    this.eventBus = eventBus;
     
     this.switchToPlan = function(planName) {
         const plan = plans[planName];
