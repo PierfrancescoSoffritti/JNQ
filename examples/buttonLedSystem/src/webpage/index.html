@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Socket.IO chat</title>
+    </head>
+    <body>
+            <script src="/socket.io/socket.io.js"></script>
+
+            <script>
+                const socket = io();
+    
+                socket.on( 'turnOn', msg => { 
+                    turnOn();
+                    socket.emit("turnedOn")
+                } );
+    
+                socket.on( 'turnOff', msg => { 
+                    turnOff();
+                    socket.emit("turnedOff")
+                } );
+    
+                function turnOn() {
+                    document.body.style.backgroundColor = "red";
+                }
+    
+                function turnOff() {                
+                    document.body.style.backgroundColor = "white";
+                }
+    
+            </script>
+    </body>
+</html>
