@@ -14,7 +14,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
     const eventBus = new EventBus();
     const planExecutor = new PlanExecutor(this);
-    const communicator = new Communicator({ port: context.hubPort, ip: context.hubIp, actorId, eventBus });
+    const communicator = new Communicator(actorId, { port: context.hubPort, ip: context.hubIp }, eventBus);
 
     this.eventBus = eventBus;
     
@@ -31,7 +31,11 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
         communicator.send( message );
     }
 
-    this.onReceive = function({ name, once, interval, action }) {
+    this.onReceive = function(name, action, config) {        
+        config = config ? config : { once: false, interval: -1 };
+        let { once, interval } = config;
+        console.log(once +" " +interval)
+
         interval = (!interval || interval <= 0) ? false : interval;
 
         if(once && !interval)

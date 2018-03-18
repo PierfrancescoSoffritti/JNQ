@@ -31,8 +31,8 @@ const perceptor = new Actor( {
 
             wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
             
-            actor.onReceive( { name: "fire", action: msg => console.log(`\n perceptor, event received: ${msg}\n`) } );
-            actor.onReceive( { name: "water", action: msg => console.log(`\n perceptor, event received: ${msg}\n`) } );
+            actor.onReceive( "fire", msg => console.log(`\n perceptor, event received: ${msg}`) );
+            actor.onReceive( "water", msg => console.log(`\n perceptor, event received: ${msg}`) );
         } ),
         
         timeoutPlan: new Plan( actor => {

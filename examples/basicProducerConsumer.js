@@ -11,6 +11,7 @@ const producer = new Actor( {
         startPlan: new Plan( async actor => {
             console.log("producer, sends 1st message");
 
+            // one gets lost, because is sent before consumer is ready
             actor.send( new Message( { recipient: "consumer", payload: { name: "testMessage", content: 1 } } ) );
 
             await wait(2000)
@@ -32,7 +33,7 @@ const consumer = new Actor( {
 
             wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
 
-            actor.onReceive( { name: "testMessage", action: msg => console.log(`\n consumer, message received: ${msg}\n`) } );
+            actor.onReceive( "testMessage", msg => console.log(`\n consumer, message received: ${msg}\n`) );
         } ),
         
         timeoutPlan: new Plan( actor => {

@@ -17,10 +17,10 @@ const plans = {
 
         await wait(2000)
 
-        actor.onReceive( { name: "testName", once: true, action: actor.finish } );
-        //actor.onReceive( { name: "testName", action: (msg) => console.log(msg) } );
-        //actor.onReceive( { name: "testName", interval: 2000, action: actor.finish } );
-        //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.finish } );
+        actor.onReceive("testName", actor.finish, { once: true } );
+        //actor.onReceive("testName", msg => console.log(msg) );
+        //actor.onReceive("testName", actor.finish, { interval: 2000 } );
+        //actor.onReceive("testName", actor.finish, { once: true, interval: 2000 } );
 
         //actor.send( new Message( { recipient:'testActor1', payload: { name: "testName", content: "test content" } } ) );
         actor.send( new Event( { payload: { name: "testName", content: "test content" } } ) );        
