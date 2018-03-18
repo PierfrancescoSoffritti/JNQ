@@ -6,6 +6,18 @@ const id = "applicationSpecificLogic";
 const sockets = {};
 let count = 0;
 
+function GUI(actor) {
+    initApplicationSpecificLogic(actor);
+
+    this.turnOn = function() {
+        Object.keys(sockets).forEach( key => sockets[key].emit("turnOn") )
+    }
+
+    this.turnOff = function() {
+        Object.keys(sockets).forEach( key => sockets[key].emit("turnOff") )
+    }
+}
+
 function initApplicationSpecificLogic(actor) {
     app.get('/', (req, res) => {
         res.sendFile(__dirname + '/index.html');
@@ -16,6 +28,8 @@ function initApplicationSpecificLogic(actor) {
         sockets[key] = socket;
         count++;
         
+        actor.eventBus.post("GUIReady");
+
         socket.on( 'turnedOn', msg => actor.eventBus.post("turnedOn") );
         socket.on( 'turnedOff', msg => actor.eventBus.post("turnedOff") );
 
@@ -27,20 +41,10 @@ function initApplicationSpecificLogic(actor) {
     actor.eventBus.subscribe( "actorFinish", id, actor => onFinish(actor) );
 }
 
-function turnOn() {
-    Object.keys(sockets).forEach( key => sockets[key].emit("turnOn") )
-}
-
-function turnOff() {
-    Object.keys(sockets).forEach( key => sockets[key].emit("turnOff") )
-}
-
 function onFinish(actor) {
     Object.keys(sockets).forEach( key => sockets[key].disconnect() )
     http.close();
     actor.eventBus.unsubscribeAll(id);
 }
 
-module.exports.initApplicationSpecificLogic = initApplicationSpecificLogic;
-module.exports.turnOn = turnOn;
-module.exports.turnOff = turnOff;
+module.exports = GUI;

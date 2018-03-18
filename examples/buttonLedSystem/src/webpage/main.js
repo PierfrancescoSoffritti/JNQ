@@ -3,29 +3,31 @@ const Plan = require('../../../../src/Plan');
 const {Message, Event} = require('../../../../src/communicationUnits');
 const {wait} = require('../../../../src/Utils');
 
-const { initApplicationSpecificLogic, turnOn, turnOff } = require('./applicationSpecificLogic');
+const GUI_module = require('./applicationSpecificLogic');
 
 const context = { hubIp: "localhost", hubPort: 8900 };
 
-const webpageActor = new Actor( { 
-    actorId: "webpageActor", context,
+const led = new Actor( { 
+    actorId: "led", context,
     plans: { 
         startPlan: new Plan( actor => {
             wait(10000).then( () => actor.switchToPlan("timeoutPlan") );
             
-            initApplicationSpecificLogic(actor);
+            const GUI = new GUI_module(actor);
 
-            actor.onReceive( { name: "turnOn", action: turnOn } );
-            actor.onReceive( { name: "turnOff", action: turnOff } );
+            actor.onReceive( { name: "GUIReady", action: () => actor.send( new Message( { recipient:'button', payload: { name: "ledReady" } } ) ) } );
+
+            actor.onReceive( { name: "turnOn", action: GUI.turnOn } );
+            actor.onReceive( { name: "turnOff", action: GUI.turnOff } );
 
             actor.onReceive( { 
                 name: "turnedOn",
-                action: () => actor.send( new Message( { recipient:'consoleActor', payload: { name: "turnedOn" } } ) ) 
+                action: () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOn" } } ) ) 
             } );
 
             actor.onReceive( {
                 name: "turnedOff",
-                action: () => actor.send( new Message( { recipient:'consoleActor', payload: { name: "turnedOff" } } ) )
+                action: () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOff" } } ) )
             } );
 
         } ),
