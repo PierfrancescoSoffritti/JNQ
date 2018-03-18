@@ -55,6 +55,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
     }
 
     this.finish = function() {
+        eventBus.post("actorFinish", this);
         communicator.finish();
         eventBus.unsubscribeAll(actorId);
     }

@@ -8,10 +8,10 @@ const applicationSpecificLogic = require('./applicationSpecificLogic');
 const context = { hubIp: "localhost", hubPort: 8900 };
 
 const webpage = new Actor( { 
-    actorId: "webpage", context,
+    actorId: "webpageActor", context,
     plans: { 
         startPlan: new Plan( actor => {
-            //wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
+            wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
 
             actor.onReceive( { name: "messageFromWebpage", action: msg => console.log(`\n actor, message received: ${msg}\n`) } );
 
@@ -20,7 +20,7 @@ const webpage = new Actor( {
         } ),
         
         timeoutPlan: new Plan( actor => {
-            console.log("webpage, timeout");
+            console.log("actor, timeout");
             actor.finish();
         } ) 
     } 
