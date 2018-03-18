@@ -13,10 +13,10 @@ const button = new Actor( {
             actor.onReceive( { name: "turnedOn", action: () => console.log("turned on") } );
             actor.onReceive( { name: "turnedOff", action: () => { console.log("turned off"); actor.switchToPlan("finishPlan") } } );
 
-            actor.onReceive( { name: "ledReady", action: () => actor.switchToPlan("blink") } );
+            actor.onReceive( { name: "ledReady", action: () => actor.switchToPlan("blinkPlan") } );
         } ),
 
-        blink: new Plan( actor => {
+        blinkPlan: new Plan( actor => {
             
             console.log("console, send turn on message");
             actor.send( new Message( { recipient:'led', payload: { name: "turnOn" } } ) )                
