@@ -15,21 +15,13 @@ const led = new Actor( {
             
             const GUI = new GUI_module(actor);
 
-            actor.onReceive( { name: "GUIReady", action: () => actor.send( new Message( { recipient:'button', payload: { name: "ledReady" } } ) ) } );
+            actor.onReceive( "GUIReady", () => actor.send( new Message( { recipient:'button', payload: { name: "ledReady" } } ) ) );
 
-            actor.onReceive( { name: "turnOn", action: GUI.turnOn } );
-            actor.onReceive( { name: "turnOff", action: GUI.turnOff } );
+            actor.onReceive( "turnOn", GUI.turnOn );
+            actor.onReceive( "turnOff", GUI.turnOff );
 
-            actor.onReceive( { 
-                name: "turnedOn",
-                action: () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOn" } } ) ) 
-            } );
-
-            actor.onReceive( {
-                name: "turnedOff",
-                action: () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOff" } } ) )
-            } );
-
+            actor.onReceive("turnedOn", () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOn" } } ) ) );
+            actor.onReceive("turnedOff", () => actor.send( new Message( { recipient:'button', payload: { name: "turnedOff" } } ) ) );
         } ),
         
         timeoutPlan: new Plan( actor => {

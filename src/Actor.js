@@ -34,7 +34,6 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
     this.onReceive = function(name, action, config) {        
         config = config ? config : { once: false, interval: -1 };
         let { once, interval } = config;
-        console.log(once +" " +interval)
 
         interval = (!interval || interval <= 0) ? false : interval;
 

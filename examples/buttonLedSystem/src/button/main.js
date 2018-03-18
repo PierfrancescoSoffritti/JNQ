@@ -10,10 +10,10 @@ const button = new Actor( {
     plans: { 
         startPlan: new Plan( actor => {
 
-            actor.onReceive( { name: "turnedOn", action: () => console.log("turned on") } );
-            actor.onReceive( { name: "turnedOff", action: () => { console.log("turned off"); actor.switchToPlan("finishPlan") } } );
-
-            actor.onReceive( { name: "ledReady", action: () => actor.switchToPlan("blinkPlan") } );
+            actor.onReceive( "ledReady", () => actor.switchToPlan("blinkPlan") );
+            
+            actor.onReceive( "turnedOn", () => console.log("turned on") );
+            actor.onReceive( "turnedOff", () => { console.log("turned off"); actor.switchToPlan("finishPlan") } );
         } ),
 
         blinkPlan: new Plan( async actor => {
