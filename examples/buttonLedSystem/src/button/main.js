@@ -16,16 +16,15 @@ const button = new Actor( {
             actor.onReceive( { name: "ledReady", action: () => actor.switchToPlan("blinkPlan") } );
         } ),
 
-        blinkPlan: new Plan( actor => {
+        blinkPlan: new Plan( async actor => {
             
             console.log("console, send turn on message");
             actor.send( new Message( { recipient:'led', payload: { name: "turnOn" } } ) )                
 
-            wait(1000).then( () => {
-                console.log("console, send turn off message");
-                actor.send( new Message( { recipient:'led', payload: { name: "turnOff" } } ) )
-            })
+            await wait(1000)
 
+            console.log("console, send turn off message");
+            actor.send( new Message( { recipient:'led', payload: { name: "turnOff" } } ) )
         }),
 
         finishPlan: new Plan( actor => {

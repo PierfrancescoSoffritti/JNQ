@@ -13,9 +13,13 @@ const actor = new Actor( {
             actor.switchToPlan("printWaitAndFinishPlan")
         } ),
         
-        printWaitAndFinishPlan: new Plan( actor => {
+        printWaitAndFinishPlan: new Plan(async actor => {
             console.log("plan started .. i'm going to wait for 2 seconds and then finish");
-            wait(2000).then( () => { console.log("i'm about to finish"); actor.finish(); });
+            
+            await wait(2000)
+            
+            console.log("i'm about to finish");
+            actor.finish();
         } )
     } 
 } );

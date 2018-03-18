@@ -12,18 +12,18 @@ const plans = {
         actor.switchToPlan("sendTestMessagePlan");
      } ),
 
-    sendTestMessagePlan: new Plan( actor => { 
+    sendTestMessagePlan: new Plan( async actor => { 
         console.log("sendTestMessagePlan")
 
-        wait(2000).then( () => {             
-            actor.onReceive( { name: "testName", once: true, action: actor.finish } );
-            //actor.onReceive( { name: "testName", action: (msg) => console.log(msg) } );
-            //actor.onReceive( { name: "testName", interval: 2000, action: actor.finish } );
-            //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.finish } );
+        await wait(2000)
 
-            //actor.send( new Message( { recipient:'testActor1', payload: { name: "testName", content: "test content" } } ) );
-            actor.send( new Event( { payload: { name: "testName", content: "test content" } } ) );
-        } ); 
+        actor.onReceive( { name: "testName", once: true, action: actor.finish } );
+        //actor.onReceive( { name: "testName", action: (msg) => console.log(msg) } );
+        //actor.onReceive( { name: "testName", interval: 2000, action: actor.finish } );
+        //actor.onReceive( { name: "testName", once: true, interval: 2000, action: actor.finish } );
+
+        //actor.send( new Message( { recipient:'testActor1', payload: { name: "testName", content: "test content" } } ) );
+        actor.send( new Event( { payload: { name: "testName", content: "test content" } } ) );        
     } ) 
 };
 
