@@ -1,0 +1,8 @@
+{
+    "name": "web-page-actor-example",
+    "version": "1.0.0",
+    "description": "",
+    "dependencies": {
+        "express": "^4.15.2"
+    }
+}
