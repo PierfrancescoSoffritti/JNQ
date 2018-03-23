@@ -4,6 +4,7 @@
     "description": "",
     "dependencies": {
         "express": "^4.15.2",
+        "jnq": "0.0.1",
         "socket.io": "^2.0.4"
     }
 }

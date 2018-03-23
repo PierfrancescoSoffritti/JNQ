@@ -1,7 +1,7 @@
-const Actor = require('../../../../src/Actor');
-const Plan = require('../../../../src/Plan');
-const {Message, Event} = require('../../../../src/communicationUnits');
-const {wait} = require('../../../../src/Utils');
+const JNQ = require('jnq');
+const {Actor, Plan, communicationUnits, utils} = JNQ;
+const {Message, Event} = communicationUnits;
+const {wait} = utils
 
 const GUI_module = require('./applicationSpecificLogic');
 
