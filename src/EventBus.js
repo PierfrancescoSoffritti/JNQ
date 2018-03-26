@@ -5,9 +5,13 @@ function EventBus() {
     this.subscribe = function( eventType, key, callback ) {
         const eventCallbacksPair = findEventCallbacksPair(eventType);
     
-        if(eventCallbacksPair)
-            eventCallbacksPair.callbacks[key] = callback;
-        else
+        if(eventCallbacksPair) {
+            // nesting callbacks
+            if(eventCallbacksPair.callbacks[key])
+                eventCallbacksPair.callbacks[key] = args => { callback(args); eventCallbacksPair.callbacks[key](args) };
+            else
+                eventCallbacksPair.callbacks[key] = callback;
+        } else
             eventCallbacksPairs.push( new EventCallbacksPair(eventType, key, callback) );
     }
 
