@@ -38,7 +38,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
         interval = (!interval || interval <= 0) ? false : interval;
 
         if(once && !interval)
-            eventBus.subscribe(name, actorId, () => { eventBus.unsubscribe(name, actorId); action(); });
+            eventBus.subscribe(name, actorId, (msg) => { eventBus.unsubscribe(name, actorId); action(msg); });
 
         else if(!once && !interval)
             eventBus.subscribe( name, actorId, action );
@@ -50,7 +50,7 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
         else if(once && interval) {
             const timeoutId = setTimeout( () =>  eventBus.unsubscribe(name, actorId), interval);
-            eventBus.subscribe(name, actorId, () => { eventBus.unsubscribe(name, actorId); clearTimeout(timeoutId); action(); });
+            eventBus.subscribe(name, actorId, (msg) => { eventBus.unsubscribe(name, actorId); clearTimeout(timeoutId); action(msg); });
         }
 
         else 
