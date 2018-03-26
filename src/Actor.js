@@ -23,8 +23,10 @@ function Actor( { actorId, context = defaultContext, state = detaultState, plans
 
         if(!plan)
             console.error(`[${actorId}] plan "${planName}" not defined.`);
-        else
+        else {
+            eventBus.unsubscribeAll(actorId);
             planExecutor.executeToPlan(plan);
+        }
     }
 
     this.send = function(message) {

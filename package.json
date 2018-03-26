@@ -1,6 +1,6 @@
 {
   "name": "jnq",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "JNQ's Not Qa! JNQ is a library used to prototype the model of distributed systems",
   "main": "index.js",
   "directories": {
