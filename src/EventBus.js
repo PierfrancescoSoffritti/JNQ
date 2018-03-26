@@ -7,9 +7,10 @@ function EventBus() {
     
         if(eventCallbacksPair) {
             // nesting callbacks
-            if(eventCallbacksPair.callbacks[key])
-                eventCallbacksPair.callbacks[key] = args => { callback(args); eventCallbacksPair.callbacks[key](args) };
-            else
+            if(eventCallbacksPair.callbacks[key]) {
+                const otherCallbacks = eventCallbacksPair.callbacks[key];
+                eventCallbacksPair.callbacks[key] = args => { callback(args); otherCallbacks(args) };
+            } else
                 eventCallbacksPair.callbacks[key] = callback;
         } else
             eventCallbacksPairs.push( new EventCallbacksPair(eventType, key, callback) );

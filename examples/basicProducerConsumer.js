@@ -34,6 +34,7 @@ const consumer = new Actor( {
             wait(4000).then( () => actor.switchToPlan("timeoutPlan") );
 
             actor.onReceive( "testMessage", msg => console.log(`\n consumer, message received: ${msg}\n`) );
+            actor.onReceive( "testMessage", msg => console.log(`\n consumer, message received: ${msg}\n`) );
         } ),
         
         timeoutPlan: new Plan( actor => {
